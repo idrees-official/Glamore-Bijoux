@@ -17,7 +17,7 @@ class Changes {
   // Title at the Material App
   static String AppTitle = 'AutoHeat';
   //one signal
-  static String oneSignalAppId = 'aebfba42-ac2a-49ea-b8d9-bfff0f9dca3a';
+  static String oneSignalAppId = 'c7792407-9df1-4b3f-bd71-ffa4c7fe3f96';
   // remove json file if you donot have one signal setup
 
   //1-  flutter pub global activate rename  //already activated just in case
