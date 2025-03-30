@@ -266,9 +266,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     _isLoading = false;
                   });
-                  _launchExternalUrl(uri.toString());
+                  // _launchExternalUrl(uri.toString());
                   // You can handle other links here and decide how to navigate to them
-                  return NavigationActionPolicy.CANCEL;
+                  // return NavigationActionPolicy.CANCEL;
                   // if (uri.toString() ==
                   //     'https://m.facebook.com/oauth/error/?error_code=PLATFORM__LOGIN_DISABLED_FROM_WEBVIEW_OLD_SDK_VERSION&display=touch') {
                   //   return NavigationActionPolicy.CANCEL;
