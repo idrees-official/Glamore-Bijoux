@@ -13,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // check if the app is first time
+  // check if the app is ficrst time
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // splash screen time duration
   // await Future.delayed(const Duration(seconds: 3));
