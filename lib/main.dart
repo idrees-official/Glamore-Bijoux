@@ -18,10 +18,20 @@ void main() async {
   // splash screen time duration
   // await Future.delayed(const Duration(seconds: 3));
   // FlutterNativeSplash.remove();
+
   InitilizeApp.callFunctions();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    // systemNavigationBarColor: Colors.transparent,
+  
+  // Enable edge-to-edge mode
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  
+  // Set transparent navigation bar
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
   ));
+  
   runApp(const MyApp());
 }
 
