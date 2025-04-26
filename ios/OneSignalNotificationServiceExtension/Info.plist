@@ -9,5 +9,9 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
+
+	<!-- Add this manually -->
+	<key>CFBundleIdentifier</key>
+	<string>com.jakaapp.app.OneSignalNotificationService</string>
 </dict>
 </plist>
