@@ -13,17 +13,11 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  // check if the app is ficrst time
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  // splash screen time duration
-  // await Future.delayed(const Duration(seconds: 3));
-  // FlutterNativeSplash.remove();
-
   InitilizeApp.callFunctions();
-  
+
   // Enable edge-to-edge mode
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  
+
   // Set transparent navigation bar
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
@@ -31,7 +25,7 @@ void main() async {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
   ));
-  
+
   runApp(const MyApp());
 }
 
@@ -48,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home:  SplashScreen(),
     );
   }
 }

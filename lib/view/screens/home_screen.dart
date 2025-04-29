@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return true;
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(0),
           child: AppBar(

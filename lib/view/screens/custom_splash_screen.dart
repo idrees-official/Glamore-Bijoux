@@ -1,50 +1,89 @@
+import 'dart:async';
+import 'dart:math' show pow;
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home_screen.dart';
+import 'package:webview_template/view/screens/bottom_navigation_screen.dart';
+import 'package:webview_template/view/screens/home_screen.dart';
+import 'package:webview_template/view/screens/onboarding_screen.dart';
 
-class CustomSplashScreen extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
   @override
-  _CustomSplashScreenState createState() => _CustomSplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _CustomSplashScreenState extends State<CustomSplashScreen> {
-  bool isLightMode = false;
-  late SharedPreferences prefs;
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
-        prefs = await SharedPreferences.getInstance();
-        print("State is changed to in splash screen: ${prefs.getBool('isLightMode')}");
-        isLightMode = prefs.getBool('isLightMode') ?? true;
-        setState(() {});
-      _navigateToHome();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+      if (isFirstTime) {
+        prefs.setBool('isFirstTime', false);
+      }
+      Timer(
+        Duration(milliseconds: 2500),
+        () => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return isFirstTime
+                  ? const OnboardingScreen()
+                  : BottomNavigationScreen();
+            },
+          ),
+        ),
+      );
     });
 
-
-
     super.initState();
-  }
-
-  _navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3), () {});
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: isLightMode
-                ? AssetImage('assets/app_icons/splash-white.png')
-                : AssetImage('assets/app_icons/splash-dark.png'), // Replace with your image path
-            fit: BoxFit.cover,
-          ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              height: 130.0,
+              width: 130.0,
+              child: TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 3000),
+                tween: Tween(begin: 0.0, end: 1.0),
+                curve: Interval(0.0, 1.0, curve: _CustomLoadingCurve()),
+                builder: (_, value, __) => CircularProgressIndicator(
+                  value: value,
+                  backgroundColor: const Color(0xFFCFCFCF),
+                  valueColor: AlwaysStoppedAnimation(const Color(0xFFB8B8B8)),
+                  strokeWidth: 18.0,
+                  strokeCap: StrokeCap.round,
+                ),
+              ),
+            ),
+            Image.asset(
+              'assets/app_icons/icon2.png',
+              height: 70.0,
+              width: 70.0,
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+class _CustomLoadingCurve extends Curve {
+  @override
+  double transformInternal(double t) {
+    if (t < 0.4) {
+      return t;
+    } else {
+      double slowedT = (t - 0.4) / (1 - 0.4);
+      return 0.4 + (pow(slowedT, 2.2) * (1 - 0.4));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_template/view/screens/bottom_navigation_screen.dart';
 import 'package:webview_template/view/screens/home_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -15,13 +16,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingItem> _items = [
     OnboardingItem(
-      image: 'assets/images/mob1.png',
+      image: 'assets/images/1.jpg',
     ),
     OnboardingItem(
-      image: 'assets/images/mob22.jpg',
+      image: 'assets/images/2.jpg',
     ),
     OnboardingItem(
-      image: 'assets/images/mob3.png',
+      image: 'assets/images/3.jpg',
     ),
   ];
 
@@ -37,6 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           PageView.builder(
@@ -76,7 +78,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           'Skip',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -92,7 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.black, // Red color
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30,
                             vertical: 15,
@@ -108,6 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -130,14 +134,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _currentPage == index ? Colors.blue : Colors.grey.shade300,
+        color: _currentPage == index ? Colors.black : const Color.fromARGB(255, 121, 120, 120),
       ),
     );
   }
 
   void navigateToHome() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        context, MaterialPageRoute(builder: (context) => BottomNavigationScreen()));
   }
 }
 
@@ -157,16 +161,11 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            item.image,
-            height: MediaQuery.of(context).size.height * 0.5,
-            fit: BoxFit.contain,
-          ),
-        ],
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Image.asset(
+        item.image,
+        fit: BoxFit.cover,
       ),
     );
   }
