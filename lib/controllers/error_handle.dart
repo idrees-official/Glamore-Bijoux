@@ -1,7 +1,7 @@
 
   import 'package:flutter/material.dart';
-import 'package:webview_template/view/screens/custom_error_screen.dart';
-import 'package:webview_template/view/screens/no_internet_error_screen.dart';
+import 'package:webview_template/view/components/custom_error.dart';
+import 'package:webview_template/view/components/no_internet_error.dart';
 
 void handleErrorCode(String errorMessage,BuildContext context) {
     // Handle different error codes here

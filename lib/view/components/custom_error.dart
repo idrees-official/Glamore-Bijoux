@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:webview_template/constants/my_app_colors.dart';
-import 'package:webview_template/controllers/internet_connectivity.dart';
-import 'package:webview_template/view/screens/home_screen.dart';
+import 'package:webview_template/utils/internet_connectivity.dart';
+import 'package:webview_template/view/screens/webview_screens/home_screen.dart';
 
 class CustomErrorScreen extends StatelessWidget {
   final String errorMessage;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:webview_template/view/screens/about_us.dart';
-import 'package:webview_template/view/screens/home_screen.dart';
-import 'package:webview_template/view/screens/notification_screen.dart';
-import 'package:webview_template/view/screens/contact_us.dart';
+import 'package:webview_template/view/screens/others_screens/about_us.dart';
+import 'package:webview_template/view/screens/webview_screens/home_screen.dart';
+import 'package:webview_template/view/screens/others_screens/notification_screen.dart';
+import 'package:webview_template/view/screens/others_screens/contact_us.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({Key? key}) : super(key: key);

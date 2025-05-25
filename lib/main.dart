@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_template/controllers/initialize_app.dart';
-import 'package:webview_template/view/screens/custom_splash_screen.dart';
-import 'package:webview_template/view/screens/home_screen.dart';
-import 'package:webview_template/view/screens/onboarding_screen.dart';
+import 'package:webview_template/view/screens/splash_onboarding/custom_splash_screen.dart';
+import 'package:webview_template/view/screens/webview_screens/home_screen.dart';
+import 'package:webview_template/view/screens/splash_onboarding/onboarding_screen.dart';
+import 'package:webview_template/constants/my_app_urls.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +18,10 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   InitilizeApp.callFunctions();
-
+  if (Platform.isAndroid) {
+    await MediaStore.ensureInitialized();
+    MediaStore.appFolder = Changes.androidMediaStoreFolderName;
+  }
   // Enable edge-to-edge mode
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
@@ -25,8 +32,15 @@ void main() async {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
   ));
-
+  // run directly
   runApp(const MyApp());
+  // run with device preview
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => MyApp(), // Wrap your app
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,12 +51,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'JAKA',
+      title: Changes.AppTitle,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

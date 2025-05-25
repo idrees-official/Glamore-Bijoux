@@ -4,8 +4,8 @@ import 'dart:math' show pow;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_template/view/screens/bottom_navigation_screen.dart';
-import 'package:webview_template/view/screens/home_screen.dart';
-import 'package:webview_template/view/screens/onboarding_screen.dart';
+import 'package:webview_template/view/screens/webview_screens/home_screen.dart';
+import 'package:webview_template/view/screens/splash_onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,18 +19,17 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-      if (isFirstTime) {
-        prefs.setBool('isFirstTime', false);
-      }
       Timer(
         Duration(milliseconds: 2500),
         () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return isFirstTime
-                  ? const OnboardingScreen()
-                  : BottomNavigationScreen();
+              return 
+              isFirstTime
+                 ? 
+                  const OnboardingScreen()
+                   : BottomNavigationScreen();
             },
           ),
         ),
