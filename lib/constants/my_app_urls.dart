@@ -1,9 +1,9 @@
 class Changes {
   // main website url
-  static String mainUrl = 'https://chapter.co.il/';
+  static String mainUrl = 'https://verifywatch.com/';
 
   // if app start with this navigate else block or opens in external
-  static String startPointUrl = 'https://chapter.co.il/';
+  static String startPointUrl = 'https://verifywatch.com/';
 
   // Title at the Material App
   static String AppTitle = 'Chapter';

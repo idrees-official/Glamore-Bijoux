@@ -26,10 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(
             builder: (context) {
               return 
-              isFirstTime
-                 ? 
-                  const OnboardingScreen()
-                   : BottomNavigationScreen();
+              // isFirstTime
+              //    ? 
+              //     const OnboardingScreen()
+                  // : 
+                   HomeScreen();
             },
           ),
         ),

@@ -176,13 +176,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 final url = navAction.request.url.toString();
                 print("🔗 Attempting URL: $url");
 
-                // Allow everything from .sparkypos.com
+                // Allow navigation within our main domain
                 if (url.contains(Changes.startPointUrl)) {
                   return NavigationActionPolicy.ALLOW;
                 }
 
-                // Block only if truly external (e.g. Facebook, WhatsApp etc.)
-                return NavigationActionPolicy.CANCEL;
+                // Handle external URLs (Facebook, WhatsApp, etc.)
+                try {
+                  await _launchExternalUrl(url);
+                  return NavigationActionPolicy.CANCEL;
+                } catch (e) {
+                  print("Failed to launch external URL: $e");
+                  return NavigationActionPolicy.ALLOW;
+                }
               },
               // <---------------------------- new code added ---------------------------->
               initialSettings: InAppWebViewSettings(
