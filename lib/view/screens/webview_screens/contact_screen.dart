@@ -14,29 +14,27 @@ import 'package:webview_template/constants/my_app_urls.dart';
 import 'package:webview_template/controllers/error_handle.dart';
 import 'package:webview_template/utils/internet_connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webview_template/services/one_signal_notification.dart';
 import 'package:dio/dio.dart';
 import 'package:media_store_plus/media_store_plus.dart';
-import 'package:media_store_plus/media_store_plus.dart' as ms;
 import 'package:path/path.dart' as path;
 
-/// Home screen that displays the main webview content
+/// Contact screen that displays the contact webview content
 /// 
 /// This screen implements professional webview features including:
-/// - Proper loading states and progress indicators
+/// - Proper loading states with SpinningLines animation
 /// - Pull-to-refresh functionality
 /// - Error handling for network issues
 /// - External URL handling
 /// - File download capabilities
 /// - Geolocation permissions
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ContactScreen extends StatefulWidget {
+  const ContactScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ContactScreen> createState() => _ContactScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ContactScreenState extends State<ContactScreen> {
   // Webview controller and state management
   InAppWebViewController? _webViewController;
   late PullToRefreshController _pullToRefreshController;
@@ -50,6 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
   // Permission and feature flags
   bool _hasGeolocationPermission = false;
   bool _isInitialized = false;
+
+  // Contact URL
+  static const String _contactUrl = 'https://www.glamorebijoux.ch/pages/contact';
 
   @override
   void initState() {
@@ -414,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Build the main webview widget
   Widget _buildWebView() {
     return InAppWebView(
-      initialUrlRequest: URLRequest(url: WebUri(Changes.mainUrl)),
+      initialUrlRequest: URLRequest(url: WebUri(_contactUrl)),
       pullToRefreshController: _pullToRefreshController,
       onWebViewCreated: (controller) {
         _webViewController = controller;
@@ -423,14 +424,12 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _isLoading = true;
           _hasError = false;
-          Changes.mainUrl = url?.toString() ?? '';
         });
       },
       onLoadStop: (controller, url) {
         setState(() {
           _isLoading = false;
           _hasError = false;
-          Changes.mainUrl = url?.toString() ?? '';
         });
       },
       onProgressChanged: (controller, progress) {
@@ -466,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Build loading indicator
+  /// Build loading indicator with SpinningLines
   Widget _buildLoadingIndicator() {
     return Container(
       color: MyColors.backgroundColor,
@@ -480,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Loading...',
+              'Loading Contact...',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: MyColors.textSecondary,
               ),
@@ -539,4 +538,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
+} 
