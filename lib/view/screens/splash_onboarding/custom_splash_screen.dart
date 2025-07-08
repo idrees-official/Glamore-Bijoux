@@ -162,124 +162,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       backgroundColor: MyColors.backgroundColor,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo and app name section
-              _buildLogoSection(),
-              
-              const SizedBox(height: 48),
-              
-              // Loading indicator section
-              _buildLoadingSection(),
-              
-              const SizedBox(height: 32),
-              
-              // App name and tagline
-              _buildAppInfoSection(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Build the logo section with animations
-  Widget _buildLogoSection() {
-    return AnimatedBuilder(
-      animation: Listenable.merge([_animationController, _pulseController]),
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value * _pulseAnimation.value,
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.primaryColor.withOpacity(0.1),
-                boxShadow: [
-                  BoxShadow(
-                    color: MyColors.primaryColor.withOpacity(0.2),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: Padding(
+          child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Image.asset(
+                  width: 200,
+                  height: 200,
                   'assets/app_icons/icon2.png',
                   fit: BoxFit.contain,
                 ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  /// Build the loading indicator section
-  Widget _buildLoadingSection() {
-    return Column(
-      children: [
-        SizedBox(
-          width: 40,
-          height: 40,
-          child: const SpinKitSpinningLines(
-            color: MyColors.primaryColor,
-            size: 40,
-          ),
+          )
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Loading...',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: MyColors.textSecondary,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Build the app info section
-  Widget _buildAppInfoSection() {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: Column(
-        children: [
-          Text(
-            'Glamore Bijoux',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: MyColors.textPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Your Premium Jewelry Destination',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: MyColors.textSecondary,
-            ),
-          ),
-        ],
       ),
     );
   }
-}
 
-/// Custom loading curve for smooth animations
-class _CustomLoadingCurve extends Curve {
-  @override
-  double transformInternal(double t) {
-    if (t < 0.4) {
-      return t;
-    } else {
-      double slowedT = (t - 0.4) / (1 - 0.4);
-      return 0.4 + (pow(slowedT, 2.2) * (1 - 0.4));
-    }
-  }
+  
 }

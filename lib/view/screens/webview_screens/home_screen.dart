@@ -151,15 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('Attempting to load URL: $url');
     }
 
-    // Allow navigation within our main domain
-    if (url.contains(Changes.startPointUrl)) {
-      return NavigationActionPolicy.ALLOW;
-    }
-
-    // Allow payment URLs to load within the app
-    if (_isPaymentUrl(url)) {
+    // Allow URLs that should load within the app
+    if (_shouldAllowInApp(url)) {
       if (kDebugMode) {
-        debugPrint('Allowing payment URL within app: $url');
+        debugPrint('Allowing URL within app: $url');
       }
       return NavigationActionPolicy.ALLOW;
     }
@@ -174,18 +169,48 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Check if URL is a payment-related URL
-  bool _isPaymentUrl(String url) {
-    final paymentDomains = [
+  /// Check if URL should be allowed to load within the app
+  bool _shouldAllowInApp(String url) {
+    // Allow URLs from our main domain
+    if (url.contains(Changes.startPointUrl)) {
+      return true;
+    }
+
+    // Allow Shopify-related URLs (payment, account, authentication)
+    final shopifyDomains = [
       'shop.app',
       'checkout.shopify.com',
       'pay.shopify.com',
       'shopify.com/checkout',
-      'stripe.com',
-      'paypal.com',
+      'shopify.com/account',
+      'shopify.com/customer_authentication',
+      'shopify.com/authentication',
+      'shopify.com/login',
+      'shopify.com/signup',
+      'shopify.com/password',
+      'shopify.com/73248047415', // Your specific Shopify store ID
+      'glamorebijoux'
     ];
     
-    return paymentDomains.any((domain) => url.contains(domain));
+    // Allow payment processor URLs
+    final paymentDomains = [
+      'stripe.com',
+      'paypal.com',
+      'apple.com/apple-pay',
+      'google.com/pay',
+    ];
+    
+    // Allow social login URLs
+    final socialLoginDomains = [
+      'facebook.com',
+      'google.com/oauth',
+      'accounts.google.com',
+      'appleid.apple.com',
+    ];
+    
+    final allAllowedDomains = [...shopifyDomains, ...paymentDomains, ...socialLoginDomains];
+    
+    return allAllowedDomains.any((domain) => url.contains(domain));
   }
 
   /// Launch external URL with proper error handling
@@ -391,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
               if (_isLoading && !_hasError) _buildLoadingIndicator(),
               
               // Error overlay
-              if (_hasError) _buildErrorOverlay(),
+              if (_hasError && !_errorMessage.contains('ERR_INTERNET_DISCONNECTED')) _buildErrorOverlay(),
             ],
           ),
         ),
@@ -475,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SpinKitSpinningLines(
-              color: MyColors.primaryColor,
+              color: MyColors.goldColor,
               size: 50.0,
             ),
             const SizedBox(height: 16),

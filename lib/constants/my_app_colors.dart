@@ -40,6 +40,8 @@ class MyColors {
   static const kprimaryColor = backgroundColor;
   static const kmainColor = primaryColor;
   static const ksecondaryColor = textPrimary;
+
+  static const Color goldColor = Color(0xFFd2ae4e);
 }
 
 
