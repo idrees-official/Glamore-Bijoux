@@ -152,6 +152,22 @@ class _CartScreenState extends State<CartScreen> {
       debugPrint('Attempting to load URL: $url');
     }
 
+    // Handle about:blank URLs (common in iOS)
+    if (url == 'about:blank') {
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    // Special handling for iOS OAuth flows
+    if (Platform.isIOS) {
+      // Always allow authentication URLs on iOS to prevent Safari opening
+      if (_isAuthenticationUrl(url)) {
+        if (kDebugMode) {
+          debugPrint('iOS: Allowing authentication URL within app: $url');
+        }
+        return NavigationActionPolicy.ALLOW;
+      }
+    }
+
     // Allow URLs that should load within the app
     if (_shouldAllowInApp(url)) {
       if (kDebugMode) {
@@ -168,6 +184,25 @@ class _CartScreenState extends State<CartScreen> {
       debugPrint('Failed to launch external URL: $e');
       return NavigationActionPolicy.ALLOW;
     }
+  }
+
+  /// Check if URL is an authentication-related URL
+  bool _isAuthenticationUrl(String url) {
+    final authKeywords = [
+      'oauth',
+      'authorize',
+      'login',
+      'signin',
+      'signup',
+      'register',
+      'authentication',
+      'customer_authentication',
+      'account',
+      'callback',
+      'pre_auth',
+    ];
+    
+    return authKeywords.any((keyword) => url.toLowerCase().contains(keyword));
   }
 
   /// Check if URL should be allowed to load within the app
@@ -208,7 +243,13 @@ class _CartScreenState extends State<CartScreen> {
       'appleid.apple.com',
     ];
     
-    final allAllowedDomains = [...shopifyDomains, ...paymentDomains, ...socialLoginDomains];
+    // Allow hCaptcha URLs (for authentication)
+    final captchaDomains = [
+      'hcaptcha.com',
+      'newassets.hcaptcha.com',
+    ];
+    
+    final allAllowedDomains = [...shopifyDomains, ...paymentDomains, ...socialLoginDomains, ...captchaDomains];
     
     return allAllowedDomains.any((domain) => url.contains(domain));
   }
@@ -485,6 +526,11 @@ class _CartScreenState extends State<CartScreen> {
         sharedCookiesEnabled: true,
         thirdPartyCookiesEnabled: true,
         domStorageEnabled: true,
+        // iOS-specific settings to prevent Safari opening
+        allowsInlineMediaPlayback: true,
+        allowsBackForwardNavigationGestures: false,
+        allowsLinkPreview: false,
+        suppressesIncrementalRendering: false,
       ),
     );
   }
