@@ -152,8 +152,11 @@ class _ContactScreenState extends State<ContactScreen> {
       debugPrint('Attempting to load URL: $url');
     }
 
-    // Handle about:blank URLs (common in iOS)
-    if (url == 'about:blank') {
+    // Handle special URLs that should always be allowed within the app
+    if (_isSpecialUrl(url)) {
+      if (kDebugMode) {
+        debugPrint('Allowing special URL within app: $url');
+      }
       return NavigationActionPolicy.ALLOW;
     }
 
@@ -229,6 +232,9 @@ class _ContactScreenState extends State<ContactScreen> {
       'apple.com/apple-pay',
       'google.com/pay',
       'paypal.com/web-sdk',
+      'paypalobjects.com',
+      'recaptcha.net',
+      'b.stats.paypal.com',
     ];
     
     // Allow social login URLs
@@ -296,6 +302,19 @@ class _ContactScreenState extends State<ContactScreen> {
     ];
     
     return checkoutKeywords.any((keyword) => url.toLowerCase().contains(keyword));
+  }
+
+  /// Check if URL is a special URL that should always be allowed
+  bool _isSpecialUrl(String url) {
+    final specialUrls = [
+      'about:blank',
+      'about:srcdoc',
+      'data:',
+      'javascript:',
+      'file:',
+    ];
+    
+    return specialUrls.any((specialUrl) => url.startsWith(specialUrl));
   }
 
   /// Launch external URL with proper error handling
