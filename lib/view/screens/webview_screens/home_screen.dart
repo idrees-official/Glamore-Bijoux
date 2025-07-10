@@ -165,6 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return NavigationActionPolicy.ALLOW;
       }
+      
+      // Additional iOS-specific handling for checkout and payment URLs
+      if (_isCheckoutOrPaymentUrl(url)) {
+        if (kDebugMode) {
+          debugPrint('iOS: Allowing checkout/payment URL within app: $url');
+        }
+        return NavigationActionPolicy.ALLOW;
+      }
     }
 
     // Allow URLs that should load within the app
@@ -204,6 +212,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return authKeywords.any((keyword) => url.toLowerCase().contains(keyword));
   }
 
+  /// Check if URL is a checkout or payment URL (iOS-specific)
+  bool _isCheckoutOrPaymentUrl(String url) {
+    final checkoutKeywords = [
+      'checkout',
+      'cart',
+      'payment',
+      'pay',
+      'wallet',
+      'sdk-authorize',
+      'web-sdk',
+      'pci.shopifyinc.com',
+      'checkout.pci.shopifyinc.com',
+    ];
+    
+    return checkoutKeywords.any((keyword) => url.toLowerCase().contains(keyword));
+  }
+
   /// Check if URL should be allowed to load within the app
   bool _shouldAllowInApp(String url) {
     // Allow URLs from our main domain
@@ -224,7 +249,12 @@ class _HomeScreenState extends State<HomeScreen> {
       'shopify.com/signup',
       'shopify.com/password',
       'shopify.com/73248047415', // Your specific Shopify store ID
-      'glamorebijoux'
+      'glamorebijoux',
+      'shopifyinc.com',
+      'pci.shopifyinc.com',
+      'checkout.pci.shopifyinc.com',
+      'pay.shopify.com',
+      'services/login_with_shop',
     ];
     
     // Allow payment processor URLs
@@ -233,6 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'paypal.com',
       'apple.com/apple-pay',
       'google.com/pay',
+      'paypal.com/web-sdk',
     ];
     
     // Allow social login URLs
@@ -249,7 +280,19 @@ class _HomeScreenState extends State<HomeScreen> {
       'newassets.hcaptcha.com',
     ];
     
-    final allAllowedDomains = [...shopifyDomains, ...paymentDomains, ...socialLoginDomains, ...captchaDomains];
+    // Allow analytics and tracking URLs
+    final analyticsDomains = [
+      'error-analytics-sessions-production.shopifysvc.com',
+      'analytics.shopify.com',
+    ];
+    
+    final allAllowedDomains = [
+      ...shopifyDomains, 
+      ...paymentDomains, 
+      ...socialLoginDomains, 
+      ...captchaDomains,
+      ...analyticsDomains
+    ];
     
     return allAllowedDomains.any((domain) => url.contains(domain));
   }
@@ -518,7 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
         javaScriptEnabled: true,
         cacheEnabled: true,
         mediaPlaybackRequiresUserGesture: false,
-        supportZoom: true,
+        supportZoom: false,
         allowFileAccessFromFileURLs: true,
         allowUniversalAccessFromFileURLs: true,
         mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
