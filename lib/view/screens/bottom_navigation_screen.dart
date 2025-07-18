@@ -4,12 +4,13 @@ import 'package:webview_template/view/screens/webview_screens/home_screen.dart';
 import 'package:webview_template/view/screens/webview_screens/products_screen.dart';
 import 'package:webview_template/view/screens/webview_screens/cart_screen.dart';
 import 'package:webview_template/view/screens/webview_screens/contact_screen.dart';
+import 'package:webview_template/view/screens/webview_screens/account_screen.dart';
 
 /// Bottom navigation screen that manages the main app navigation
 /// 
 /// This screen maintains webview state to avoid reloading when switching tabs
 /// and provides a smooth navigation experience with proper state management.
-/// Implements 4 tabs: Home, Products, Cart, Contact as specified in coding standards.
+/// Implements 5 tabs: Home, Products, Cart, Contact, Account as specified in coding standards.
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({Key? key}) : super(key: key);
 
@@ -27,6 +28,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     const ProductsScreen(),
     const CartScreen(),
     const ContactScreen(),
+    const AccountScreen(),
   ];
 
   // Navigation items configuration
@@ -50,6 +52,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       icon: Icons.contact_support_outlined,
       activeIcon: Icons.contact_support_rounded,
       label: 'Contact',
+    ),
+    const BottomNavigationItem(
+      icon: Icons.person_outline,
+      activeIcon: Icons.person_rounded,
+      label: 'Account',
     ),
   ];
 
